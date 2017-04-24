@@ -69,7 +69,7 @@ export default class TodosListItem extends React.Component {
   render() {
     return (
       <tr>
-        <td>{this.renderTaskSection()}</td>
+        {this.renderTaskSection()}
         {this.renderActionsSection()}
       </tr>
     );

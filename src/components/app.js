@@ -15,6 +15,17 @@ const todos = [
   }
 ]
 
+const todos2 = [
+  {
+    task: 'test incomplete task 2!',
+    isCompleted: false
+  },
+  {
+    task: 'complete task 2!',
+    isCompleted: true
+  }
+]
+
 //initialize our App component. add it onto the React component object.
 export default class App extends React.Component {
   constructor(props) {
@@ -22,7 +33,7 @@ export default class App extends React.Component {
 
     //set our todos array in state. this could be a db query if this was full stack.
     this.state = {
-      todos
+      todos, todos2
     }
   }
 
@@ -32,8 +43,16 @@ export default class App extends React.Component {
       <div>
         <h1>ToDo List</h1>
         <CreateTodo todos={this.state.todos} createTask={this.createTask.bind(this)} />
+        <h3>List 1</h3>
         <TodosList
           todos={this.state.todos}
+          toggleTask={this.toggleTask.bind(this)}
+          saveTask={this.saveTask.bind(this)}
+          deleteTask={this.deleteTask.bind(this)}
+        />
+        <h3>List 2</h3>
+        <TodosList
+          todos={this.state.todos2}
           toggleTask={this.toggleTask.bind(this)}
           saveTask={this.saveTask.bind(this)}
           deleteTask={this.deleteTask.bind(this)}

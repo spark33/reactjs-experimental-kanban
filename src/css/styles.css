@@ -1,0 +1,19 @@
+body
+{
+	text-align: center;
+}
+
+form
+{
+	width: 50%;
+	margin: 0 auto;
+}
+
+table
+{
+	padding: 30px;
+	width: 50%;
+	margin: 0 auto;
+	text-align: center;
+	background: #eee;
+}

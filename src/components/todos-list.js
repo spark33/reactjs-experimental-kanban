@@ -23,7 +23,7 @@ export default class TodosList extends React.Component {
 //todosListHeader component at the top.
   render() {
     return (
-      <table>
+      <table className="todo-list">
         <TodosListHeader />
         <tbody>
           {this.renderItems()}
