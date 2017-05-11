@@ -18,6 +18,7 @@
   </head>
   <body>
     <div id="app"></div>
+    <button id="saveButton" onclick="saveAllData()">Save</button>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -43,17 +44,68 @@
 
   <!-- create sortable table -->
   <script>
-  $( function() {
-    $( ".todo-list" ).sortable({
-      items: 'tbody > tr',
-      cursor: 'crosshair',
-      connectWith: '.todo-list',
-      axis: 'y',
-      dropOnEmpty: true,
-      receive: function(e, ui){
-       $(this).find("tbody").append(ui.item);   
-      }
-    }).disableSelection();
-  } );
+    $( function() {
+      $( ".todo-list" ).sortable({
+        items: 'tbody > tr',
+        cursor: 'crosshair',
+        connectWith: '.todo-list',
+        axis: 'y',
+        dropOnEmpty: true,
+        receive: function(e, ui){
+         $(this).find("tbody").append(ui.item);   
+        }
+      }).disableSelection();
+    } );
+    function saveAllData() {
+      $('table').each(function(e){
+        exportTableToCSV.apply(this, [$(this), $(this).attr('class')]);
+      });
+    }
+    function exportTableToCSV($table, filename) {
+
+      var $rows = $table.find('tr:has(td),tr:has(th)'),
+
+        // Temporary delimiter characters unlikely to be typed by keyboard
+        // This is to avoid accidentally splitting the actual contents
+        tmpColDelim = String.fromCharCode(11), // vertical tab character
+        tmpRowDelim = String.fromCharCode(0), // null character
+
+        // actual delimiter characters for CSV format
+        colDelim = '","',
+        rowDelim = '"\r\n"',
+
+        // Grab text from table into CSV formatted string
+        csv = '"' + $rows.map(function (i, row) {
+            var $row = $(row), $cols = $row.find('td,th');
+
+            return $cols.map(function (j, col) {
+                var $col = $(col), text = $col.text();
+
+                return text.replace(/"/g, '""'); // escape double quotes
+
+            }).get().join(tmpColDelim);
+
+        }).get().join(tmpRowDelim)
+            .split(tmpRowDelim).join(rowDelim)
+            .split(tmpColDelim).join(colDelim) + '"';
+
+        console.log(csv);
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            var link = document.createElement("a");
+            if (link.download !== undefined) { // feature detection
+                // Browsers that support HTML5 download attribute
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
   </script>
 </html>

@@ -45,16 +45,18 @@ export default class App extends React.Component {
         <CreateTodo todos={this.state.todos} createTask={this.createTask.bind(this)} />
         <h3>List 1</h3>
         <TodosList
+          name='list1'
           todos={this.state.todos}
           toggleTask={this.toggleTask.bind(this)}
-          saveTask={this.saveTask.bind(this)}
+          saveTask={this.saveNewTask.bind(this)}
           deleteTask={this.deleteTask.bind(this)}
         />
         <h3>List 2</h3>
         <TodosList
+          name="list2"
           todos={this.state.todos2}
           toggleTask={this.toggleTask.bind(this)}
-          saveTask={this.saveTask.bind(this)}
+          saveTask={this.saveNewTask.bind(this)}
           deleteTask={this.deleteTask.bind(this)}
         />
       </div>
@@ -88,7 +90,7 @@ export default class App extends React.Component {
   }
 
   //this function takes in the unedited and edited tasks, finds them and updates the todos array
-  saveTask(oldTask, newTask) {
+  saveNewTask(oldTask, newTask) {
     const foundTodo = _.find(this.state.todos, todo => todo.task === oldTask)
     foundTodo.task = newTask;
 
